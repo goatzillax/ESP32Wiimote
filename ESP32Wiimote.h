@@ -47,6 +47,7 @@ typedef struct {
         uint8_t xAxis;
         uint8_t yAxis;
         uint8_t zAxis;
+	bool valid;
 // moved to ButtonState
 //      uint8_t cBtn;
 //      uint8_t zBtn;
@@ -74,6 +75,7 @@ public:
   void init(void);
   void task(void);
   int available(void);
+  int available(int always);
   ButtonState getButtonState(void);
   AccelState getAccelState(void);
   NunchukState getNunchukState(void);

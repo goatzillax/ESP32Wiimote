@@ -31,6 +31,8 @@ typedef struct tinywii_device_callback {
 
 void TinyWiimoteInit(TwHciInterface hciInterface);
 int TinyWiimoteAvailable(void);
+bool TinyWiimoteConnected(void);
+bool TinyWiimoteNunchukConnected(void);
 TinyWiimoteData TinyWiimoteRead(void);
 
 void TinyWiimoteResetDevice(void);

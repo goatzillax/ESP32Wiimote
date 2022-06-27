@@ -1070,6 +1070,14 @@ int TinyWiimoteAvailable() {
   return receivedDataRb.cnt;
 }
 
+bool TinyWiimoteConnected(void) {
+  return wiimoteConnected;
+}
+
+bool TinyWiimoteNunchukConnected(void) {
+  return nunchukConnected;
+}
+
 TinyWiimoteData TinyWiimoteRead() {
   TinyWiimoteData target;
   target.number = 0;

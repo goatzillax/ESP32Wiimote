@@ -176,7 +176,14 @@ void ESP32Wiimote::task(void)
   handleRxQueue();
 }
 
-int ESP32Wiimote::available(void)
+int ESP32Wiimote::available(void) {
+	return available(false);
+}
+
+//  OK so seriously:
+//  Who uses int for booleans?
+//  How would someone implement a failsafe?
+int ESP32Wiimote::available(int always)
 {
     int offs = 0;
     int buttonIsChanged = false;
@@ -251,6 +258,7 @@ int ESP32Wiimote::available(void)
         _nunchukState.xAxis  = rd.data[offs + 2];
         _nunchukState.yAxis  = rd.data[offs + 3];
         _nunchukState.zAxis  = rd.data[offs + 4];
+	_nunchukState.valid = true;
 
         // update nunchuk buttons
         cBtn = ((rd.data[offs + 5] & 0x02) >> 1) ^ 0x01;
@@ -258,6 +266,9 @@ int ESP32Wiimote::available(void)
     }
     else
     {
+	//  Still seem to get like 2 packets worth of 255/255 when the nunchuk is unplugged.
+	//  fucking dangerous.
+	_nunchukState.valid = false;  //  you see, 0 is actually a legal value...
         _nunchukState.xStick = 0;
         _nunchukState.yStick = 0;
         _nunchukState.xAxis  = 0;
@@ -318,6 +329,7 @@ int ESP32Wiimote::available(void)
         | nunchukStickIsChanged
 //      | nunchukButtonIsChanged
         | accelIsChanged
+	| always
         );
 }
 
